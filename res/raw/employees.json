@@ -1,0 +1,65 @@
+{
+    "name": "employees.db",
+    "version": 1,
+    "tables": [
+        {
+            "name": "Employees",
+            "columns": [
+                {
+                    "name": "_id",
+                    "type": "integer",
+                    "isPrimary": true,
+                    "autoIncrement": true,
+                    "notNull": true
+                },
+                {
+                    "name": "first_name",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "last_name",
+                    "type": "text",
+                    "notNull": true
+                }
+            ]
+        },
+        {
+            "name": "Products",
+            "columns": [
+                {
+                    "name": "_id",
+                    "type": "integer",
+                    "isPrimary": true,
+                    "autoIncrement": true,
+                    "notNull": true
+                },
+                {
+                    "name": "product_name",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "product_id",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "creation_date",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "ship_date",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "customer_name",
+                    "type": "text",
+                    "notNull": true
+                }
+            ]
+        }
+    ]
+}

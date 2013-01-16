@@ -1,0 +1,78 @@
+{
+    "_comment": "test migration table v4 - mix of removing columns and add new tables",
+    "name": "test_migration_table.db",
+    "version": 4,
+    "tables": [
+        {
+            "name": "TestTable",
+            "columns": [
+                {
+                    "name": "_id",
+                    "type": "integer",
+                    "isPrimary": true,
+                    "autoIncrement": true,
+                    "notNull": true
+                },
+                {
+                    "name": "column3",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column4",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column5",
+                    "type": "text",
+                    "notNull": true
+                }
+            ]
+        },
+        {
+            "name": "NewTable1",
+            "columns": [
+                {
+                    "name": "_id",
+                    "type": "integer",
+                    "isPrimary": true,
+                    "autoIncrement": true,
+                    "notNull": true
+                },
+                {
+                    "name": "column1",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column2",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column3",
+                    "type": "text",
+                    "notNull": true
+                }
+            ]
+        },
+        {
+            "name": "NewTable2",
+            "columns": [
+                {
+                    "name": "_id",
+                    "type": "integer",
+                    "isPrimary": true,
+                    "autoIncrement": true,
+                    "notNull": true
+                },
+                {
+                    "name": "column1",
+                    "type": "text",
+                    "notNull": true
+                }
+            ]
+        }
+    ]
+}

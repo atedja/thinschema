@@ -1,0 +1,69 @@
+{
+    "_comment": "test migration table v3 - add even more columns!",
+    "name": "test_migration_table.db",
+    "version": 3,
+    "tables": [
+        {
+            "name": "TestTable",
+            "columns": [
+                {
+                    "name": "_id",
+                    "type": "integer",
+                    "isPrimary": true,
+                    "autoIncrement": true,
+                    "notNull": true
+                },
+                {
+                    "name": "column1",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column2",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column3",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column4",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column5",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column6",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column7",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column8",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column9",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column10",
+                    "type": "text",
+                    "notNull": true
+                }
+            ]
+        }
+    ]
+}

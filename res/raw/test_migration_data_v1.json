@@ -1,0 +1,30 @@
+{
+    "_comment": "Test table migration with data",
+    "name": "test_migration_data.db",
+    "version": 1,
+    "tables": [
+        {
+            "name": "TestTable",
+            "columns": [
+                {
+                    "name": "_id",
+                    "type": "integer",
+                    "isPrimary": true,
+                    "autoIncrement": true,
+                    "notNull": true
+                },
+                {
+                    "name": "column1",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column2",
+                    "type": "text",
+                    "notNull": true,
+                    "defaultValue": "0"
+                }
+            ]
+        }
+    ]
+}

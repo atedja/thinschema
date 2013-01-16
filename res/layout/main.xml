@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <Button android:id="@+id/btn_start_test"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Run Test"
+            android:onClick="onRunTest"/>
+
+    <ScrollView android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:fillViewport="true">
+        <TextView android:id="@+id/tv_log"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="top"
+                  android:singleLine="false"
+                  android:scrollbars="vertical"/>
+    </ScrollView>
+
+</LinearLayout>
+

@@ -1,0 +1,34 @@
+{
+    "_comment": "test migration table v2 - add column",
+    "name": "test_migration_table.db",
+    "version": 2,
+    "tables": [
+        {
+            "name": "TestTable",
+            "columns": [
+                {
+                    "name": "_id",
+                    "type": "integer",
+                    "isPrimary": true,
+                    "autoIncrement": true,
+                    "notNull": true
+                },
+                {
+                    "name": "column1",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column2",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column3",
+                    "type": "text",
+                    "notNull": true
+                }
+            ]
+        }
+    ]
+}
