@@ -47,7 +47,97 @@ This project is designed for use on Android operating system.
 
 ## Database Schema Format
 
-WIP. Please see the test files located in `res/raw` to learn more about the format of the JSON schema for now.
+Database:
+
+```
+{
+  "name": "YourDatabaseName",
+  "version": DatabaseVersion,
+  "tables" : [ .. ]
+}
+```
+
+Tables:
+
+```
+{
+  "name": "TableName",
+  "columns": [ .. ]
+}
+```
+
+Columns:
+
+```
+{
+  "name": "ColumnName",
+  "type": "integer" | "int" | "string" | "text" | "float" | "double" | "real",
+  "isPrimary": true | false,
+  "autoIncrement": true | false,
+  "notNull": true | false,
+  "defaultValue": DefaultValue 
+}
+```
+
+##### Example:
+
+```
+{
+  "name": "Students.db",
+  "version": 1,
+  "tables": [
+    {
+      "name": "Students",
+      "columns": [
+        {
+          "name": "_id",
+          "type": "integer",
+          "isPrimary": true,
+          "autoIncrement": true,
+          "notNull": true
+        },
+        {
+          "name": "FirstName",
+          "type": "text",
+          "notNull": true
+        },
+        {
+          "name": "LastName",
+          "type": "text",
+          "notNull": true,
+        },
+        {
+          "name": "IDNumber",
+          "type": "integer",
+          "notNull": true
+        }
+      ]
+    },
+    {
+      "name": "StudentsClassRelations",
+      "columns": [
+        {
+          "name": "_id",
+          "type": "integer",
+          "isPrimary": true,
+          "autoIncrement": true,
+          "notNull": true
+        },
+        {
+          "name": "StudentID",
+          "type": "integer",
+          "notNull": true
+        },
+        {
+          "name": "ClassID",
+          "type": "integer",
+          "notNull": true
+        }
+      ]
+    }
+  ]
+}
+```
 
 ### Enjoy!
 
