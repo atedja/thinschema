@@ -18,6 +18,12 @@ See Installation Guide below for how to use ThinSchema in your project.
 
 ## Installation Guide
 
+Update project so the ant tools can point to your local Android SDK installation.
+
+`android update project --path <thinschema_project_folder>`
+
+Run `ant debug`, or if you have Google's Play key, you can run `ant release`.
+
 Create a JAR file by executing:
 
 ```
