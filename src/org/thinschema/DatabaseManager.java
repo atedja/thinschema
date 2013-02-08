@@ -33,9 +33,9 @@ import java.util.List;
 
 
 /**
- * DatabaseManager extends from Android's standard SQLiteOpenHelper. It overrides only two methods:
- * onCreate and onUpgrade. 
- *
+ * DatabaseManager extends from Android's standard SQLiteOpenHelper.
+ * It overrides only two methods: onCreate and onUpgrade.
+ * <p/>
  * You may extend from DatabaseManager.
  *
  * @author atedja
@@ -56,15 +56,16 @@ public class DatabaseManager extends SQLiteOpenHelper {
         this(context, databaseSchema, false);
     }
 
-    public DatabaseManager(Context context, DBSchema databaseSchema, boolean inMemory) {
-        super(context, inMemory ? null : databaseSchema.getDatabaseName(), null, databaseSchema.getDatabaseVersion());
-        Log.d("DBSCHEMA", "assigning dbschema");
+    public DatabaseManager(Context context,
+                           DBSchema databaseSchema,
+                           boolean inMemory) {
+        super(context, inMemory ? null : databaseSchema.getDatabaseName(),
+            null, databaseSchema.getDatabaseVersion());
         dbSchema = databaseSchema;
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d("DBSCHEMA", "onCreate");
         List<String> tables = dbSchema.getTableNames();
         for (String table : tables) {
             createTable(sqLiteDatabase, table);
@@ -72,12 +73,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        Log.d("DBSCHEMA", "onUpgrade from: " + oldVersion + ", newVersion: " + newVersion);
-
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase,
+                          int oldVersion,
+                          int newVersion) {
         // get all table names from the old database
         List<String> oldTableNames = getTableNames(sqLiteDatabase);
-        
+
         sqLiteDatabase.beginTransaction();
 
         try {
@@ -121,16 +122,17 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     /**
-     * Migrates a table to the new schema. A new table is created, data from old table is copied over to the new table,
-     * then the old table is deleted.
+     * Migrates a table to the new schema. A new table is created, data from
+     * old table is copied over to the new table, then the old table is deleted.
      *
-     * @param sqLiteDatabase
-     * @param tableSchema
+     * @param sqLiteDatabase SQLiteDatabase instance.
+     * @param tableName      The name of the table to be migrated.
+     * @param migrateData    true if data should be migrated. false will erase
+     *                       existing data.
      */
     private void migrateTable(SQLiteDatabase sqLiteDatabase, String tableName, boolean migrateData) {
         // rename old table to a new name
         String oldTableName = tableName + "_old";
-        Log.d("", "tableName: " + tableName + ", oldTableName: " + oldTableName);
         sqLiteDatabase.execSQL("ALTER TABLE " + tableName + " RENAME TO " + oldTableName + ";");
 
         // create the new table
@@ -163,9 +165,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     /**
      * Creates a table from a JSON schema.
      *
-     * @param sqLiteDatabase
-     * @param table
-     * @return
+     * @param sqLiteDatabase SQLiteDatabase instance.
+     * @param tableName      The name of the table to be created.
      */
     private void createTable(SQLiteDatabase sqLiteDatabase, String tableName) {
         StringBuilder sb = new StringBuilder(64);
@@ -178,11 +179,15 @@ public class DatabaseManager extends SQLiteOpenHelper {
             sb.append(dbSchema.getColumnName(tableName, i));
 
             String type = dbSchema.getColumnType(tableName, i);
-            if (DT_INTEGER.equalsIgnoreCase(type) || DT_INT.equalsIgnoreCase(type)) {
+            if (DT_INTEGER.equalsIgnoreCase(type)
+                || DT_INT.equalsIgnoreCase(type)) {
                 sb.append(" INTEGER");
-            } else if (DT_TEXT.equals(type) || DT_STRING.equalsIgnoreCase(type)) {
+            } else if (DT_TEXT.equals(type)
+                || DT_STRING.equalsIgnoreCase(type)) {
                 sb.append(" TEXT");
-            } else if (DT_REAL.equals(type) || DT_FLOAT.equalsIgnoreCase(type) || DT_DOUBLE.equalsIgnoreCase(type)) {
+            } else if (DT_REAL.equals(type)
+                || DT_FLOAT.equalsIgnoreCase(type)
+                || DT_DOUBLE.equalsIgnoreCase(type)) {
                 sb.append(" REAL");
             }
 
@@ -211,22 +216,23 @@ public class DatabaseManager extends SQLiteOpenHelper {
     /**
      * Delete an existing table.
      *
-     * @param sqLiteDatabase
-     * @param tableName
+     * @param sqLiteDatabase SQLiteDatabase instance.
+     * @param tableName      The name of the table to be deleted.
      */
     private void deleteTable(SQLiteDatabase sqLiteDatabase, String tableName) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + tableName + ";");
     }
 
     /**
-     * Get a list of column names from a given table. Table must already exist in the given
+     * Get a list of column names from a given table. Table must exist in the given
      * database.
      *
-     * @param sqLiteDatabase Database name
-     * @param tableName      Name of the table
-     * @return
+     * @param sqLiteDatabase Database name.
+     * @param tableName      Name of the table.
+     * @return A list of column names,
      */
-    private static List<String> getColumnNames(SQLiteDatabase sqLiteDatabase, String tableName) {
+    private static List<String> getColumnNames(SQLiteDatabase sqLiteDatabase,
+                                               String tableName) {
         List<String> retval = null;
         Cursor cursor = null;
         try {
@@ -257,7 +263,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     String tableName = cursor.getString(0);
                     // ignore system tables
                     if (!"android_metadata".equals(tableName) &&
-                            !"sqlite_sequence".equals(tableName)) {
+                        !"sqlite_sequence".equals(tableName)) {
                         tableNames.add(tableName);
                     }
                     cursor.moveToNext();
