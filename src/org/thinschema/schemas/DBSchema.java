@@ -23,10 +23,24 @@ import java.util.List;
 
 /**
  * Defines a database schema. Classes that implement this interface must sanitize the database, table, and column names.
- * 
+ *
  * @author atedja
  */
 public interface DBSchema {
+
+    public static class Column {
+        String name;
+        String type;
+        boolean isPrimary;
+        boolean autoIncrement;
+        boolean notNull;
+        String defaultValue;
+    }
+
+    public static class Table {
+        String name;
+        boolean autoPrimaryKey;
+    }
 
     /**
      * Get the name of the database.
@@ -50,6 +64,14 @@ public interface DBSchema {
      * @return Table name.
      */
     public String getTableName(int index);
+
+    /**
+     * Get the property autoPrimaryKey.
+     *
+     * @param index The index of the table.
+     * @return true if table should generate a primary key, false otherwise.
+     */
+    public boolean getTableAutoPrimaryKey(int index);
 
     /**
      * Helper method that should return a List of all table names.

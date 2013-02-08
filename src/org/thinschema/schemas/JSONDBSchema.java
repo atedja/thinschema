@@ -31,20 +31,9 @@ import java.util.*;
  */
 public final class JSONDBSchema implements DBSchema {
 
-    private static class Column {
-        String name;
-        String type;
-        boolean isPrimary;
-        boolean autoIncrement;
-        boolean notNull;
-        String defaultValue;
-    }
-
-
-
     private String dbName;
     private int dbVersion;
-    private String[] dbTables;
+    private Table[] dbTables;
     private HashMap<String, List<Column>> dbColumns;
 
     public JSONDBSchema(JSONObject jsonSchema) {
@@ -53,11 +42,13 @@ public final class JSONDBSchema implements DBSchema {
 
         // parse the table and columns
         JSONArray tables = jsonSchema.optJSONArray("tables");
-        dbTables = new String[tables.length()];
+        dbTables = new Table[tables.length()];
         dbColumns = new HashMap<String, List<Column>>(tables.length());
         for (int i = 0, size = tables.length(); i < size; ++i) {
             JSONObject tableJson = tables.optJSONObject(i);
-            dbTables[i] = tableJson.optString("name");
+            Table table = new Table();
+            table.name = tableJson.optString("name");
+            table.autoPrimaryKey = tableJson.optBoolean("autoPrimaryKey");
 
             JSONArray columns = tableJson.optJSONArray("columns");
             ArrayList<Column> columnsList = new ArrayList<Column>(columns.length());
@@ -72,7 +63,9 @@ public final class JSONDBSchema implements DBSchema {
                 column.defaultValue = columnJson.optString("defaultValue");
                 columnsList.add(j, column);
             }
-            dbColumns.put(dbTables[i], columnsList);
+
+            dbTables[i] = table;
+            dbColumns.put(table.name, columnsList);
         }
     }
 
@@ -89,11 +82,19 @@ public final class JSONDBSchema implements DBSchema {
     }
 
     public String getTableName(int index) {
-        return dbTables[index];
+        return dbTables[index].name;
+    }
+
+    public boolean getTableAutoPrimaryKey(int index) {
+        return dbTables[index].autoPrimaryKey;
     }
 
     public List<String> getTableNames() {
-        return new ArrayList<String>(Arrays.asList(dbTables));
+        ArrayList<String> array = new ArrayList<String>();
+        for (Table table : dbTables) {
+            array.add(table.name);
+        }
+        return array;
     }
 
     public int getColumnCount(String table) {
