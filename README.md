@@ -68,6 +68,7 @@ Tables:
 ```
 {
   "name": "TableName",
+  "autoPrimaryKey": true | false, # Auto generate a primary key column named '_id'
   "columns": [ .. ]
 }
 ```
