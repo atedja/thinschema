@@ -97,6 +97,8 @@ public class MainActivity extends Activity {
 
                 testMigrationDataFillData();
                 testMigrationDataMigrate();
+
+                testAutoPrimaryKey();
             }
         }.run();
     }
@@ -166,7 +168,7 @@ public class MainActivity extends Activity {
 
             StringBuilder sb = new StringBuilder();
 
-            appendLog("TESTING EMPLOYEES DATABASE");
+            appendLog("*** TESTING EMPLOYEES DATABASE ***");
             boolean test = DBValidator.tableExists(db, "Employees");
             appendLog(createHtml("Employee Table: ", test));
             test = DBValidator.tableExists(db, "Products");
@@ -199,7 +201,7 @@ public class MainActivity extends Activity {
             dbManager = new DatabaseManager(this, new JSONDBSchema(jsonObject));
             SQLiteDatabase db = dbManager.getReadableDatabase();
 
-            appendLog("TEST MIGRATION V1");
+            appendLog("*** TEST MIGRATION V1 ***");
             appendLog(createHtml("TestMigrationV4/NewTable1 should not exist: ", !DBValidator.tableExists(db, "NewTable1")));
             appendLog(createHtml("TestMigrationV4/NewTable2 should not exist: ", !DBValidator.tableExists(db, "NewTable2")));
             appendLog(createHtml("TestMigrationV1/TestTable: ", DBValidator.tableExists(db, "TestTable")));
@@ -224,7 +226,7 @@ public class MainActivity extends Activity {
             dbManager = new DatabaseManager(this, new JSONDBSchema(jsonObject));
             SQLiteDatabase db = dbManager.getWritableDatabase();
 
-            appendLog("TEST MIGRATION V2");
+            appendLog("*** TEST MIGRATION V2 ***");
             appendLog(createHtml("TestMigrationV4/NewTable1 should not exist: ", !DBValidator.tableExists(db, "NewTable1")));
             appendLog(createHtml("TestMigrationV4/NewTable2 should not exist: ", !DBValidator.tableExists(db, "NewTable2")));
             appendLog(createHtml("TestMigrationV2/TestTable: ", DBValidator.tableExists(db, "TestTable")));
@@ -249,7 +251,7 @@ public class MainActivity extends Activity {
             dbManager = new DatabaseManager(this, new JSONDBSchema(jsonObject));
             SQLiteDatabase db = dbManager.getWritableDatabase();
 
-            appendLog("TEST MIGRATION V3");
+            appendLog("*** TEST MIGRATION V3 ***");
             appendLog(createHtml("TestMigrationV4/NewTable1 should not exist: ", !DBValidator.tableExists(db, "NewTable1")));
             appendLog(createHtml("TestMigrationV4/NewTable2 should not exist: ", !DBValidator.tableExists(db, "NewTable2")));
             appendLog(createHtml("TestMigrationV3/TestTable: ", DBValidator.tableExists(db, "TestTable")));
@@ -281,7 +283,7 @@ public class MainActivity extends Activity {
             dbManager = new DatabaseManager(this, new JSONDBSchema(jsonObject));
             SQLiteDatabase db = dbManager.getWritableDatabase();
 
-            appendLog("TEST MIGRATION V4");
+            appendLog("*** TEST MIGRATION V4 ***");
             appendLog(createHtml("TestMigrationV4/NewTable1: ", DBValidator.tableExists(db, "NewTable1")));
             appendLog(createHtml("TestMigrationV4/NewTable2: ", DBValidator.tableExists(db, "NewTable2")));
             appendLog(createHtml("TestMigrationV4/TestTable: ", DBValidator.tableExists(db, "TestTable")));
@@ -308,7 +310,7 @@ public class MainActivity extends Activity {
             dbManager = new DatabaseManager(this, new JSONDBSchema(jsonObject));
             SQLiteDatabase db = dbManager.getWritableDatabase();
 
-            appendLog("TEST DATA MIGRATION - FILL");
+            appendLog("*** TEST DATA MIGRATION - FILL ***");
             appendLog(createHtml("TestTable/_id: ", DBValidator.columnExists(db, "TestTable", "_id")));
             appendLog(createHtml("TestTable/column1: ", DBValidator.columnExists(db, "TestTable", "column1")));
             appendLog(createHtml("TestTable/column2: ", DBValidator.columnExists(db, "TestTable", "column2")));
@@ -346,7 +348,7 @@ public class MainActivity extends Activity {
             dbManager = new DatabaseManager(this, new JSONDBSchema(jsonObject));
             SQLiteDatabase db = dbManager.getWritableDatabase();
 
-            appendLog("TEST DATA MIGRATION - MIGRATE");
+            appendLog("*** TEST DATA MIGRATION - MIGRATE ***");
             appendLog(createHtml("TestTable/_id: ", DBValidator.columnExists(db, "TestTable", "_id")));
             appendLog(createHtml("TestTable/column1: ", DBValidator.columnExists(db, "TestTable", "column1")));
             appendLog(createHtml("TestTable/column2 should not exist: ", !DBValidator.columnExists(db, "TestTable", "column2")));
@@ -354,6 +356,28 @@ public class MainActivity extends Activity {
 
             List<String> someData = DBValidator.getValues(db, "TestTable", "column1");
             appendLog(createHtml("Is data identical? ", fillData.equals(someData)));
+
+            db.close();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void testAutoPrimaryKey() {
+        try {
+            if (dbManager != null) {
+                dbManager.close();
+            }
+
+            JSONObject jsonObject = new JSONObject(getSchema(R.raw.test_auto_primary_key));
+            dbManager = new DatabaseManager(this, new JSONDBSchema(jsonObject));
+            SQLiteDatabase db = dbManager.getWritableDatabase();
+
+            appendLog("*** Test autoPrimaryKey ***");
+            appendLog(createHtml("TestTable/_id: ", DBValidator.columnExists(db, "TestTable", "_id")));
+            appendLog(createHtml("TestTable/column1: ", DBValidator.columnExists(db, "TestTable", "column1")));
+            appendLog(createHtml("TestTable/column2  ", DBValidator.columnExists(db, "TestTable", "column2")));
 
             db.close();
         } catch (JSONException e) {

@@ -52,7 +52,21 @@ public final class JSONDBSchema implements DBSchema {
 
             JSONArray columns = tableJson.optJSONArray("columns");
             ArrayList<Column> columnsList = new ArrayList<Column>(columns.length());
-            for (int j = 0, columnSize = columns.length(); j < columnSize; ++j) {
+
+            // If autoPrimaryKey is set, then generate the primary key column.
+            if (table.autoPrimaryKey) {
+                Column column = new Column();
+                column.name = "_id";
+                column.type = "integer";
+                column.isPrimary = true;
+                column.autoIncrement = true;
+                column.notNull = true;
+                column.defaultValue = "";
+                columnsList.add(column);
+            }
+
+            int columnSize = columns.length();
+            for (int j = 0; j < columnSize; ++j) {
                 JSONObject columnJson = columns.optJSONObject(j);
                 Column column = new Column();
                 column.name = columnJson.optString("name");
@@ -61,7 +75,7 @@ public final class JSONDBSchema implements DBSchema {
                 column.autoIncrement = columnJson.optBoolean("autoIncrement");
                 column.notNull = columnJson.optBoolean("notNull");
                 column.defaultValue = columnJson.optString("defaultValue");
-                columnsList.add(j, column);
+                columnsList.add(column);
             }
 
             dbTables[i] = table;
@@ -90,7 +104,7 @@ public final class JSONDBSchema implements DBSchema {
     }
 
     public List<String> getTableNames() {
-        ArrayList<String> array = new ArrayList<String>();
+        List<String> array = new ArrayList<String>();
         for (Table table : dbTables) {
             array.add(table.name);
         }

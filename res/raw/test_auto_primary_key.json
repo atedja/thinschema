@@ -1,0 +1,24 @@
+{
+    "_comment": "Test primary key",
+    "name": "test_auto_primary_key.db",
+    "version": 1,
+    "tables": [
+        {
+            "name": "TestTable",
+            "autoPrimaryKey": true,
+            "columns": [
+                {
+                    "name": "column1",
+                    "type": "text",
+                    "notNull": true
+                },
+                {
+                    "name": "column2",
+                    "type": "text",
+                    "notNull": true,
+                    "defaultValue": "0"
+                }
+            ]
+        }
+    ]
+}
