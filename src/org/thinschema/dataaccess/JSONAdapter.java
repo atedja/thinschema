@@ -21,7 +21,7 @@ package org.thinschema.dataaccess;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import org.thinschema.schemas.JSONDBSchema;
+import org.thinschema.schemas.DBSchema;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,30 +30,35 @@ import java.util.Iterator;
 
 /**
  * Helper methods to insert/update/delete records.
- * Future feature. DO NOT USE!
  *
- * @deprecated
  * @author atedja
  */
-public class JSONDataAccess {
+public class JSONAdapter {
+
+
     /**
-     * Get all data from table and convert them to JSON. Each row is converted to its own JSONObject containing
-     * the names of the columns as keys, and content as values. For example, if a table whose name is "People" consists
-     * of two columns "FirstName" and "LastName", the generated JSON would be:
+     * Get all data from table and convert them to JSON. Each row is converted
+     * to its own JSONObject containing the names of the columns as keys, and
+     * the contents as values. For example, if a table whose name is "People"
+     * consists of two columns "FirstName" and "LastName", the generated JSON
+     * would be:
+     * </p>
      * <code>
-     * { "name": "People", "data": [ { "FirstName": "John", "LastName": "Doe" }, { "FirstName": "Susan", "LastName": "Appleseed" } ] }
+     * { "name": "People", "rows": [ { "FirstName": "John", "LastName": "Doe" },
+     * { "FirstName": "Susan", "LastName": "Appleseed" } ] }
      * </code>
      *
-     * @param sqLiteDatabase
-     * @param tableName
-     * @return
+     * @param database  SQLiteDatabase instance.
+     * @param tableName The name of the table.
+     * @return JSONObject instance containing all records.
      */
-    public JSONObject convertTableToJson(SQLiteDatabase sqLiteDatabase, String tableName) {
+    public static JSONObject get(SQLiteDatabase database, String tableName) {
+
         JSONObject retval = new JSONObject();
         Cursor cursor = null;
         try {
             retval.put("name", tableName);
-            cursor = sqLiteDatabase.query(tableName, null, null, null, null, null, null);
+            cursor = database.query(tableName, null, null, null, null, null, null);
 
             // we get the list of all column names to make it easier when inserting key-value pairs
             String[] columnNames = cursor.getColumnNames();
@@ -75,7 +80,7 @@ public class JSONDataAccess {
                 }
 
                 // add all of that to the result
-                retval.put("data", data);
+                retval.put("rows", data);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -88,38 +93,56 @@ public class JSONDataAccess {
     }
 
     /**
-     * Fill a table with data from a JSON.
+     * Fill a table with data from a JSON. The JSON must contain an array of
+     * JSON named 'rows', where each JSON represents one row (or record)
+     * in the database.
      *
-     * @param sqLiteDatabase
-     * @param tableName
-     * @param jsonData
+     * @param sqLiteDatabase SQLiteDatabase instance.
+     * @param dbSchema       Database schema.
+     * @param tableName      Table name.
+     * @param jsonData       JSONObject
+     * @return true if insertion is successful.
      */
-    private boolean fillTableFromJson(SQLiteDatabase sqLiteDatabase, JSONDBSchema jsondbSchema, String tableName, JSONObject jsonData) {
+    public static boolean fill(SQLiteDatabase sqLiteDatabase, DBSchema dbSchema, String tableName, JSONObject jsonData) {
         boolean success = true;
-        JSONArray data = jsonData.optJSONArray("data");
-        if (data != null && data.length() > 0) {
-            for (int i = 0, size = data.length(); i < size; ++i) {
-                JSONObject row = data.optJSONObject(i);
-                ContentValues cv = getContentValues(row, jsondbSchema, tableName);
-                if (sqLiteDatabase.insert(tableName, null, cv) == -1) {
-                    success = false;
-                    break;
+        JSONArray data = jsonData.optJSONArray("rows");
+
+        sqLiteDatabase.beginTransaction();
+        try {
+            if (data != null && data.length() > 0) {
+                for (int i = 0, size = data.length(); i < size; ++i) {
+                    JSONObject row = data.optJSONObject(i);
+                    ContentValues cv = toContentValues(row, dbSchema, tableName);
+                    if (sqLiteDatabase.insert(tableName, null, cv) == -1) {
+                        success = false;
+                        break;
+                    }
                 }
             }
+
+            if (success) {
+                sqLiteDatabase.setTransactionSuccessful();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqLiteDatabase.endTransaction();
         }
         return success;
     }
 
     /**
-     * Convert a JSONObject to ConventValues, based on the provided schema. Keys that do not exist in
-     * the schema as columns will be ignored. Likewise, columns that exist in schema but does not exist in
-     * the JSON will use the default value.
+     * Convert a JSONObject to ConventValues, based on the provided schema.
+     * Keys that do not exist in the schema as columns will be ignored.
+     * Likewise, columns that exist in schema but does not exist in the JSON
+     * will use the default value.
      *
-     * @param jsonObject
-     * @param tableName
-     * @return
+     * @param jsonObject JSONObject instance.
+     * @param dbSchema   Database schema.
+     * @param tableName  Name of table.
+     * @return An instance of ContentValues.
      */
-    private ContentValues getContentValues(JSONObject jsonObject, JSONDBSchema dbSchema, String tableName) {
+    private static ContentValues toContentValues(JSONObject jsonObject, DBSchema dbSchema, String tableName) {
         ContentValues cv = new ContentValues();
 
         Iterator<String> iterator = jsonObject.keys();
