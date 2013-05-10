@@ -17,7 +17,7 @@
  */
 
 
-package org.thinschema;
+package org.thinschema.tests;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
