@@ -4,7 +4,7 @@ ThinSchema
 Copyright (C) 2013, Albert Tedja.
 
 Database migration has always been a pain-staking process. Keeping track and managing migration is even more so, especially when you have released so many different database version on your Android app. 
-This library is provided to make it easier to migrate and manage your database schemas. The schema is written in JSON format. 
+This library is provided to make it easier to migrate and manage your database schemas. The schema can be written in JSON format. There will be support for other formats (YAML and XML) in the future.
 
 ## Why?
 
@@ -12,7 +12,7 @@ When releasing client-side applications, you are responsible in managing all the
 
 ## What This Project Is
 
-This project actually contains the tests for ThinSchema. To run the test, run `ant debug`.  You will get a debug apk in the `bin/` folder. Load it up on emulator or your device, click Run Test, and see the tests pass.
+This project also contains the tests for ThinSchema. To run the test, run `ant debug install && ant test` from the test project. Make sure you have an emulator running.
 
 See Installation Guide below for how to use ThinSchema in your project.
 
@@ -22,15 +22,16 @@ Update project so the ant tools can point to your local Android SDK installation
 
 `android update project --path <thinschema_project_folder>`
 
-Run `ant debug`, or if you have Google's Play key, you can run `ant release`.
+This project is a library project. You can include it in your main application project. Please refer to the official Android documentation on how to do so.
 
-Create a JAR file by executing:
+Additionally, you can create a JAR file by executing:
 
 ```
+ant debug  // or ant release
 ant jar
 ```
 
-It will create `org.thinschema.jar` in the project folder. Copy it to your project's `lib/` folder, and you can start using it!
+It will create `org.thinschema.jar` in the project folder. Copy it to your main project's `lib/` folder, and you can start using it!
 
 ## How do I use it?
 
