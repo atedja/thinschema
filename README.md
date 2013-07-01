@@ -12,7 +12,7 @@ When releasing client-side applications, you are responsible in managing all the
 
 ## What This Project Is
 
-This project also contains the tests for ThinSchema. To run the test, run `ant debug install && ant test` from the test project. Make sure you have an emulator running.
+This project is an Android Library project, and also contains the test project. To run the test, run `ant debug install && ant test` from the test project. Make sure you have an emulator running.
 
 See Installation Guide below for how to use ThinSchema in your project.
 
@@ -24,7 +24,7 @@ Update project so the ant tools can point to your local Android SDK installation
 
 This project is a library project. You can include it in your main application project. Please refer to the official Android documentation on how to do so.
 
-Additionally, you can create a JAR file by executing:
+Additionally, you can also create a JAR file by executing:
 
 ```
 ant debug  // or ant release
@@ -46,11 +46,11 @@ JSONDBSchema jsonSchema = new JSONDBSchema(json);
 DatabaseManager dm = new DatabaseManager(this, jsonSchema);
 ```
 
-3. DatabaseManager will handle all creation and migration automatically!
+DatabaseManager will handle all creation and migration automatically!
 
 ## Compatibility
 
-This project is designed for use on Android operating system.
+This project is designed for the Android operating system.
 
 ## Database Schema Format
 
