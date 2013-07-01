@@ -17,6 +17,6 @@
     "adb shell am instrument -w org.thinschema.tests/android.test.InstrumentationTestRunner"
     -->
     <instrumentation android:name="android.test.InstrumentationTestRunner"
-                     android:targetPackage="org.thinschema"
+                     android:targetPackage="org.thinschema.tests"
                      android:label="Tests for org.thinschema"/>
 </manifest>
